@@ -1,0 +1,249 @@
+/* HelpOnWheels Mini App — оптимизированные стили и анимации */
+:root {
+  --bg: #0f1419;
+  --bg-card: #1a2332;
+  --bg-card-hover: #243044;
+  --accent: #3b82f6;
+  --accent-soft: rgba(59, 130, 246, 0.2);
+  --primary: #f59e0b;
+  --primary-soft: rgba(245, 158, 11, 0.15);
+  --text: #e7e9ea;
+  --text-muted: #8b98a5;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  --safe-bottom: env(safe-area-inset-bottom, 0);
+  --dur: 0.35s;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding-bottom: var(--safe-bottom);
+}
+
+.app {
+  min-height: 100dvh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+}
+
+/* Header */
+.header {
+  padding: max(12px, env(safe-area-inset-top)) 0 20px;
+  animation: fadeSlideDown var(--dur) var(--ease) both;
+}
+
+@keyframes fadeSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 8px rgba(245, 158, 11, 0.3));
+  animation: pulse 2.5s var(--ease) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.logo-text h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.logo-text p {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Main */
+.main {
+  flex: 1;
+  padding: 8px 0 24px;
+}
+
+.lead {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  animation: fadeIn var(--dur) var(--ease) 0.1s both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Cards grid */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  padding: 16px 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: inherit;
+  transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  will-change: transform;
+  animation: cardIn var(--dur) var(--ease) both;
+  border: 1px solid transparent;
+}
+
+.card:nth-child(1) { animation-delay: 0.05s; }
+.card:nth-child(2) { animation-delay: 0.1s; }
+.card:nth-child(3) { animation-delay: 0.15s; }
+.card:nth-child(4) { animation-delay: 0.2s; }
+.card:nth-child(5) { animation-delay: 0.25s; }
+.card:nth-child(6) { animation-delay: 0.3s; }
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.card:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) {
+  .card:hover {
+    background: var(--bg-card-hover);
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+  }
+}
+
+.card--primary {
+  grid-column: 1 / -1;
+  min-height: 88px;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 14px;
+  background: linear-gradient(135deg, var(--primary-soft) 0%, var(--accent-soft) 100%);
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+.card--primary .card__icon {
+  font-size: 2rem;
+}
+
+.card--primary .card__label {
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.card__icon {
+  font-size: 1.75rem;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.card--primary .card__icon {
+  margin-bottom: 0;
+}
+
+.card__label {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+}
+
+.card--primary .card__label {
+  text-align: left;
+}
+
+.card__hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.card--primary .card__hint {
+  margin-top: 2px;
+  display: block;
+}
+
+/* Footer */
+.footer {
+  padding: 16px 0 max(16px, var(--safe-bottom));
+  text-align: center;
+  animation: fadeIn var(--dur) var(--ease) 0.35s both;
+}
+
+.footer p {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .lead,
+  .card,
+  .footer,
+  .logo-icon {
+    animation: none;
+  }
+  .card {
+    transition-duration: 0.1s;
+  }
+}

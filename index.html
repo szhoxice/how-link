@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0f1419">
+  <title>HelpOnWheels</title>
+  <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="logo-wrap">
+        <span class="logo-icon" aria-hidden="true">🚗</span>
+        <div class="logo-text">
+          <h1>HelpOnWheels</h1>
+          <p>Взаимопомощь на дорогах</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <p class="lead">Выберите действие</p>
+      <nav class="cards" id="cards">
+        <a class="card card--primary" href="#" data-start="help_needed">
+          <span class="card__icon">🆘</span>
+          <span class="card__label">Требуется помощь</span>
+          <span class="card__hint">Создать заявку</span>
+        </a>
+        <a class="card" href="#" data-start="help_others">
+          <span class="card__icon">🚑</span>
+          <span class="card__label">Хочу помочь</span>
+          <span class="card__hint">Найти заявки рядом</span>
+        </a>
+        <a class="card" href="#" data-start="my_accepted">
+          <span class="card__icon">📥</span>
+          <span class="card__label">Принятые заявки</span>
+          <span class="card__hint">Активные помощи</span>
+        </a>
+        <a class="card" href="#" data-start="close_requests">
+          <span class="card__icon">❌</span>
+          <span class="card__label">Мои заявки</span>
+          <span class="card__hint">Закрыть или оценить</span>
+        </a>
+        <a class="card" href="#" data-start="settings">
+          <span class="card__icon">⚙️</span>
+          <span class="card__label">Настройки</span>
+          <span class="card__hint">Профиль и радиус</span>
+        </a>
+        <a class="card" href="#" data-start="rating">
+          <span class="card__icon">🏆</span>
+          <span class="card__label">Рейтинг</span>
+          <span class="card__hint">Топ волонтёров</span>
+        </a>
+      </nav>
+    </main>
+
+    <footer class="footer">
+      <p>Поддержка: @szhoxice</p>
+    </footer>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
