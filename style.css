@@ -139,6 +139,14 @@ body {
   will-change: transform;
   animation: cardIn var(--dur) var(--ease) both;
   border: 1px solid transparent;
+  cursor: pointer;
+  font: inherit;
+}
+.card:focus {
+  outline: none;
+}
+button.card {
+  border: 1px solid transparent;
 }
 
 .card:nth-child(1) { animation-delay: 0.05s; }
@@ -232,6 +240,113 @@ body {
 .footer p {
   font-size: 0.8125rem;
   color: var(--text-muted);
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.15s var(--ease), opacity 0.15s;
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.btn--primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: #fff;
+  width: 100%;
+  margin-top: 8px;
+}
+.btn--secondary {
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--text-muted);
+  width: 100%;
+  margin-top: 8px;
+}
+.btn--back {
+  background: transparent;
+  color: var(--text-muted);
+  margin-top: 20px;
+  width: 100%;
+}
+.list-item .btn {
+  width: auto;
+  margin: 4px 4px 0 0;
+  padding: 8px 12px;
+  font-size: 0.875rem;
+}
+
+/* Form */
+.form {
+  max-width: 420px;
+  margin: 0 auto 16px;
+}
+.field {
+  margin-bottom: 14px;
+}
+.field label {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.field input[type="text"],
+.field input[type="number"] {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--bg-card-hover);
+  background: var(--bg-card);
+  color: var(--text);
+  font: inherit;
+}
+.field--row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.field--row input[type="checkbox"] {
+  width: auto;
+}
+.hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* List */
+.list {
+  max-width: 420px;
+  margin: 0 auto 16px;
+}
+.list-item {
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+}
+.list-item p {
+  margin: 4px 0;
+  font-size: 0.9375rem;
+}
+.list-item .list-item__meta {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+.profile-box {
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  margin-bottom: 16px;
+  font-size: 0.9375rem;
 }
 
 /* Reduce motion */

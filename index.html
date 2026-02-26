@@ -9,57 +9,136 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app">
+  <div class="app" id="app">
     <header class="header">
       <div class="logo-wrap">
         <span class="logo-icon" aria-hidden="true">🚗</span>
         <div class="logo-text">
           <h1>HelpOnWheels</h1>
-          <p>Взаимопомощь на дорогах</p>
+          <p class="header-sub" id="headerSub">Взаимопомощь на дорогах</p>
         </div>
       </div>
     </header>
 
-    <main class="main">
+    <!-- Экран: нужна регистрация -->
+    <main class="main screen" id="screen-register" data-screen="register" style="display:none;">
+      <p class="lead">Чтобы пользоваться приложением, пройдите регистрацию в боте (геолокация и контакт).</p>
+      <button type="button" class="btn btn--primary" id="btnOpenBot">Открыть бота для регистрации</button>
+    </main>
+
+    <!-- Экран: главное меню -->
+    <main class="main screen" id="screen-home" data-screen="home" style="display:none;">
       <p class="lead">Выберите действие</p>
       <nav class="cards" id="cards">
-        <a class="card card--primary" href="#" data-start="help_needed">
+        <button type="button" class="card card--primary" data-go="create">
           <span class="card__icon">🆘</span>
           <span class="card__label">Требуется помощь</span>
           <span class="card__hint">Создать заявку</span>
-        </a>
-        <a class="card" href="#" data-start="help_others">
+        </button>
+        <button type="button" class="card" data-go="find">
           <span class="card__icon">🚑</span>
           <span class="card__label">Хочу помочь</span>
           <span class="card__hint">Найти заявки рядом</span>
-        </a>
-        <a class="card" href="#" data-start="my_accepted">
+        </button>
+        <button type="button" class="card" data-go="accepted">
           <span class="card__icon">📥</span>
           <span class="card__label">Принятые заявки</span>
           <span class="card__hint">Активные помощи</span>
-        </a>
-        <a class="card" href="#" data-start="close_requests">
+        </button>
+        <button type="button" class="card" data-go="my">
           <span class="card__icon">❌</span>
           <span class="card__label">Мои заявки</span>
           <span class="card__hint">Закрыть или оценить</span>
-        </a>
-        <a class="card" href="#" data-start="settings">
+        </button>
+        <button type="button" class="card" data-go="settings">
           <span class="card__icon">⚙️</span>
           <span class="card__label">Настройки</span>
           <span class="card__hint">Профиль и радиус</span>
-        </a>
-        <a class="card" href="#" data-start="rating">
+        </button>
+        <button type="button" class="card" data-go="rating">
           <span class="card__icon">🏆</span>
           <span class="card__label">Рейтинг</span>
           <span class="card__hint">Топ волонтёров</span>
-        </a>
+        </button>
       </nav>
+    </main>
+
+    <!-- Экран: создать заявку -->
+    <main class="main screen" id="screen-create" data-screen="create" style="display:none;">
+      <p class="lead">Новая заявка</p>
+      <form id="formCreate" class="form">
+        <div class="field">
+          <label>Гос. номер (необязательно)</label>
+          <input type="text" id="createNumber" placeholder="А123БВ77" maxlength="20">
+        </div>
+        <div class="field">
+          <label>Опишите ситуацию *</label>
+          <input type="text" id="createHelpType" placeholder="Не заводится, нужно прикурить" required>
+        </div>
+        <button type="button" class="btn btn--secondary" id="btnGetLocation">📍 Взять мои координаты</button>
+        <p class="hint" id="createLocationHint">Нажмите, чтобы подставить текущую геолокацию</p>
+        <button type="submit" class="btn btn--primary" id="btnSubmitCreate">Создать заявку</button>
+      </form>
+      <button type="button" class="btn btn--back" data-go="home">← Назад</button>
+    </main>
+
+    <!-- Экран: искать заявки -->
+    <main class="main screen" id="screen-find" data-screen="find" style="display:none;">
+      <p class="lead">Заявки рядом</p>
+      <button type="button" class="btn btn--secondary" id="btnFindLocation">📍 Обновить моё местоположение</button>
+      <div id="findList" class="list"></div>
+      <button type="button" class="btn btn--back" data-go="home">← Назад</button>
+    </main>
+
+    <!-- Экран: принятые заявки -->
+    <main class="main screen" id="screen-accepted" data-screen="accepted" style="display:none;">
+      <p class="lead">Принятые заявки</p>
+      <div id="acceptedList" class="list"></div>
+      <button type="button" class="btn btn--back" data-go="home">← Назад</button>
+    </main>
+
+    <!-- Экран: мои заявки -->
+    <main class="main screen" id="screen-my" data-screen="my" style="display:none;">
+      <p class="lead">Мои заявки</p>
+      <div id="myList" class="list"></div>
+      <button type="button" class="btn btn--back" data-go="home">← Назад</button>
+    </main>
+
+    <!-- Экран: настройки -->
+    <main class="main screen" id="screen-settings" data-screen="settings" style="display:none;">
+      <p class="lead">Настройки</p>
+      <form id="formSettings" class="form">
+        <div class="field">
+          <label>Радиус поиска (км)</label>
+          <input type="number" id="settingsRadius" min="1" max="100" value="10">
+        </div>
+        <div class="field field--row">
+          <label>Уведомления о новых заявках</label>
+          <input type="checkbox" id="settingsNotif" checked>
+        </div>
+        <div class="field">
+          <label>Радиус уведомлений (км)</label>
+          <input type="number" id="settingsNotifDist" min="1" max="10" value="10">
+        </div>
+        <button type="submit" class="btn btn--primary">Сохранить</button>
+      </form>
+      <div id="settingsProfile" class="profile-box"></div>
+      <button type="button" class="btn btn--back" data-go="home">← Назад</button>
+    </main>
+
+    <!-- Экран: рейтинг -->
+    <main class="main screen" id="screen-rating" data-screen="rating" style="display:none;">
+      <p class="lead">Топ волонтёров</p>
+      <div id="ratingList" class="list"></div>
+      <button type="button" class="btn btn--back" data-go="home">← Назад</button>
     </main>
 
     <footer class="footer">
       <p>Поддержка: @szhoxice</p>
     </footer>
   </div>
+  <!-- URL API (замените на ваш HTTPS-адрес: ngrok, Cloudflare Tunnel или свой домен) -->
+  <script>window.APP_CONFIG = { apiUrl: 'https://how-link.vercel.app' };</script>
   <script src="app.js"></script>
 </body>
 </html>
