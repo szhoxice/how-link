@@ -2,7 +2,12 @@
   'use strict';
 
   var BOT_LINK = 'https://t.me/@neforandalt_bot';
-  var API_BASE = (window.APP_CONFIG && window.APP_CONFIG.apiUrl) ? window.APP_CONFIG.apiUrl : '';
+  function getApiBase() {
+    try {
+      return (typeof localStorage !== 'undefined' && localStorage.getItem('apiUrl')) ||
+        (window.APP_CONFIG && window.APP_CONFIG.apiUrl) || '';
+    } catch (e) { return (window.APP_CONFIG && window.APP_CONFIG.apiUrl) || ''; }
+  }
 
   function getInitData() {
     return (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) || '';
@@ -16,7 +21,7 @@
   }
 
   function apiGet(path) {
-    return fetch(API_BASE + path, { headers: apiHeaders() }).then(function (r) {
+    return fetch(getApiBase() + path, { headers: apiHeaders() }).then(function (r) {
       if (r.status === 401) return Promise.reject({ status: 401 });
       if (!r.ok) return Promise.reject({ status: r.status });
       return r.json();
@@ -26,7 +31,7 @@
   function apiPost(path, body) {
     var payload = body || {};
     if (getInitData()) payload.initData = getInitData();
-    return fetch(API_BASE + path, {
+    return fetch(getApiBase() + path, {
       method: 'POST',
       headers: apiHeaders(),
       body: JSON.stringify(payload)
@@ -39,7 +44,7 @@
   function apiPatch(path, body) {
     var payload = body || {};
     if (getInitData()) payload.initData = getInitData();
-    return fetch(API_BASE + path, {
+    return fetch(getApiBase() + path, {
       method: 'PATCH',
       headers: apiHeaders(),
       body: JSON.stringify(payload)
@@ -157,6 +162,10 @@
 
     document.getElementById('formSettings').addEventListener('submit', function (e) {
       e.preventDefault();
+      var urlEl = document.getElementById('settingsApiUrl');
+      if (urlEl && urlEl.value.trim()) {
+        try { localStorage.setItem('apiUrl', urlEl.value.trim().replace(/\/$/, '')); } catch (err) {}
+      }
       var radius = parseInt(document.getElementById('settingsRadius').value, 10);
       var notif = document.getElementById('settingsNotif').checked;
       var notifDist = parseInt(document.getElementById('settingsNotifDist').value, 10);
@@ -174,20 +183,49 @@
       });
     });
 
-    apiGet('/api/me').then(function (me) {
-      document.getElementById('headerSub').textContent = me.first_name ? 'Привет, ' + me.first_name + '!' : 'Взаимопомощь на дорогах';
-      showScreen('home');
-    }).catch(function (err) {
-      showScreen('register');
-      var hint = document.getElementById('registerHint');
-      if (hint) {
-        if (err && err.status === 401) {
-          hint.textContent = 'Сессия не распознана. Откройте приложение из чата с ботом (меню бота → Приложение).';
-        } else {
-          hint.textContent = 'Не удалось подключиться к серверу. Запустите бота и в настройках приложения укажите адрес API по HTTPS (ngrok или свой домен).';
+    function tryMe() {
+      apiGet('/api/me').then(function (me) {
+        document.getElementById('headerSub').textContent = me.first_name ? 'Привет, ' + me.first_name + '!' : 'Взаимопомощь на дорогах';
+        showScreen('home');
+      }).catch(function (err) {
+        showScreen('register');
+        var hint = document.getElementById('registerHint');
+        if (hint) {
+          if (err && err.status === 401) {
+            hint.textContent = 'Сессия не распознана. Откройте приложение из чата с ботом (меню бота → Приложение).';
+          } else if (!getApiBase()) {
+            hint.textContent = 'Укажите адрес API (HTTPS) ниже — например URL из Cloudflare Tunnel.';
+          } else {
+            hint.textContent = 'Не удалось подключиться к серверу. Проверьте, что бот запущен и адрес API верный (можно обновить ниже).';
+          }
         }
-      }
-    });
+        var inputApi = document.getElementById('registerApiUrl');
+        if (inputApi) inputApi.value = getApiBase();
+      });
+    }
+    tryMe();
+
+    var inputApi = document.getElementById('registerApiUrl');
+    var btnApply = document.getElementById('btnApplyApiUrl');
+    if (inputApi && btnApply) {
+      btnApply.addEventListener('click', function () {
+        var url = (inputApi.value || '').trim().replace(/\/$/, '');
+        if (!url) return;
+        try { localStorage.setItem('apiUrl', url); } catch (e) {}
+        btnApply.textContent = 'Проверка...';
+        btnApply.disabled = true;
+        apiGet('/api/me').then(function (me) {
+          document.getElementById('headerSub').textContent = me.first_name ? 'Привет, ' + me.first_name + '!' : 'Взаимопомощь на дорогах';
+          showScreen('home');
+          btnApply.textContent = 'Применить и проверить';
+          btnApply.disabled = false;
+        }).catch(function () {
+          btnApply.textContent = 'Ошибка, проверьте URL';
+          btnApply.disabled = false;
+          setTimeout(function () { btnApply.textContent = 'Применить и проверить'; }, 2000);
+        });
+      });
+    }
   }
 
   function loadFind() {
@@ -320,6 +358,8 @@
       document.getElementById('settingsNotif').checked = s.notifications_enabled;
       document.getElementById('settingsNotifDist').value = s.notification_distance_km || 10;
     });
+    var settingsApiUrl = document.getElementById('settingsApiUrl');
+    if (settingsApiUrl) settingsApiUrl.value = getApiBase() || '';
   }
 
   function loadRating() {

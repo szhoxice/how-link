@@ -20,10 +20,15 @@
       </div>
     </header>
 
-    <!-- Экран: нужна регистрация -->
+    <!-- Экран: нужна регистрация / нет связи -->
     <main class="main screen" id="screen-register" data-screen="register" style="display:none;">
       <p class="lead">Чтобы пользоваться приложением, пройдите регистрацию в боте (геолокация и контакт).</p>
       <p class="hint" id="registerHint"></p>
+      <div class="field" style="margin-top: 1rem;">
+        <label>Адрес API (HTTPS)</label>
+        <input type="text" id="registerApiUrl" placeholder="https://xxx.trycloudflare.com">
+        <button type="button" class="btn btn--secondary" id="btnApplyApiUrl" style="margin-top: 0.5rem;">Применить и проверить</button>
+      </div>
       <button type="button" class="btn btn--primary" id="btnOpenBot">Открыть бота для регистрации</button>
     </main>
 
@@ -121,6 +126,10 @@
           <label>Радиус уведомлений (км)</label>
           <input type="number" id="settingsNotifDist" min="1" max="10" value="10">
         </div>
+        <div class="field">
+          <label>Адрес API (если сменили туннель)</label>
+          <input type="text" id="settingsApiUrl" placeholder="https://xxx.trycloudflare.com">
+        </div>
         <button type="submit" class="btn btn--primary">Сохранить</button>
       </form>
       <div id="settingsProfile" class="profile-box"></div>
@@ -139,7 +148,7 @@
     </footer>
   </div>
   <!-- URL API (замените на ваш HTTPS-адрес: ngrok, Cloudflare Tunnel или свой домен) -->
-  <script>window.APP_CONFIG = { apiUrl: 'https://bright-expenditure-salvador-rainbow.trycloudflare.com' };</script>
+  <script>window.APP_CONFIG = { apiUrl: 'https://hormone-close-editors-admission.trycloudflare.com' };</script>
   <script src="app.js"></script>
 </body>
 </html>
