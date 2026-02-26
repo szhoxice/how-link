@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var BOT_LINK = 'https://t.me/helponwheels_bot';
+  var BOT_LINK = 'https://t.me/@neforandalt_bot';
   var API_BASE = (window.APP_CONFIG && window.APP_CONFIG.apiUrl) ? window.APP_CONFIG.apiUrl : '';
 
   function getInitData() {
