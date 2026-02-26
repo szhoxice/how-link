@@ -18,6 +18,7 @@
   function apiGet(path) {
     return fetch(API_BASE + path, { headers: apiHeaders() }).then(function (r) {
       if (r.status === 401) return Promise.reject({ status: 401 });
+      if (!r.ok) return Promise.reject({ status: r.status });
       return r.json();
     });
   }
@@ -177,10 +178,14 @@
       document.getElementById('headerSub').textContent = me.first_name ? 'Привет, ' + me.first_name + '!' : 'Взаимопомощь на дорогах';
       showScreen('home');
     }).catch(function (err) {
-      if (err && err.status === 401) {
-        showScreen('register');
-      } else {
-        showScreen('register');
+      showScreen('register');
+      var hint = document.getElementById('registerHint');
+      if (hint) {
+        if (err && err.status === 401) {
+          hint.textContent = 'Сессия не распознана. Откройте приложение из чата с ботом (меню бота → Приложение).';
+        } else {
+          hint.textContent = 'Не удалось подключиться к серверу. Запустите бота и в настройках приложения укажите адрес API по HTTPS (ngrok или свой домен).';
+        }
       }
     });
   }
